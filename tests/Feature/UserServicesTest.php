@@ -34,4 +34,13 @@ class UserServicesTest extends TestCase
     {
         self::assertFalse($this->userServices->login("sanjaya", "bimas"));
     }
+
+    public function testLogout(){
+        $this->withSession(
+            ["user","bimas"]
+            )
+            ->post('/logout')
+            ->assertRedirect('/')
+            ->assertSessionMissing('user');
+    }
 }
