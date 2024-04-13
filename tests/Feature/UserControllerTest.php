@@ -14,6 +14,13 @@ class UserControllerTest extends TestCase
         ->assertSeeText('Login');
     }
 
+    public function testLoginPageForMember()
+    {
+       $this->session(['user'=> 'bimas'])
+       ->get('/login')
+       ->assertRedirect('/');
+    }
+
     public function testLoginSuccess(){
         $this->post('/login', [
             'user' => 'bimas',
@@ -21,6 +28,15 @@ class UserControllerTest extends TestCase
         ])
         ->assertRedirect('/')
         ->assertSessionHas('user','bimas');
+    }
+
+    public function testLoginForUserAlreadyLogin(){
+        $this->withSession(['user' => 'bimas'])
+        ->post('/login', [
+            'user'=> 'bimas',
+            'password'=> 'rahasia',
+        ])
+        ->assertRedirect('/');
     }
 
     public function testLoginError(){
