@@ -24,5 +24,5 @@ route::controller(\App\Http\Controllers\UserController::class)
         {
             route::get('/login', 'login')->middleware([\App\Http\Middleware\OnlyGuestMiddleware::class]);
             route::post('/login','doLogin')->middleware([\App\Http\Middleware\OnlyGuestMiddleware::class]);
-            Route::post('/logout','doLogout');
+            Route::post('/logout','doLogout')->middleware([\App\Http\Middleware\OnlyMemberMiddleware::class]);
         });
