@@ -11,8 +11,13 @@ class HomeController extends Controller
     {
         if($request->session()->exists("user")){
             return redirect("/todolist");
-        }else{
+        } else {
             return redirect("/login");
         }
     }
+    
+    public function homePage() {
+        return view('user.homePage', ['title' => 'Home']);
+    }
+    
 }

@@ -13,14 +13,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',[\App\Http\Controllers\HomeController::class,'home']);
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\UserController;
 
-route::view('/template','template');
+// Rute untuk pengguna yang belum login
+Route::middleware([\App\Http\Middleware\OnlyGuestMiddleware::class])->group(function () {
+    Route::get('/login', [UserController::class, 'login']);
+    Route::post('/login', [UserController::class, 'doLogin']);
+});
 
-route::controller(\App\Http\Controllers\UserController::class)
-    ->group(function()
-        {
-            route::get('/login', 'login')->middleware([\App\Http\Middleware\OnlyGuestMiddleware::class]);
-            route::post('/login','doLogin')->middleware([\App\Http\Middleware\OnlyGuestMiddleware::class]);
-            Route::post('/logout','doLogout')->middleware([\App\Http\Middleware\OnlyMemberMiddleware::class]);
-        });
+// Rute untuk pengguna yang sudah login
+Route::middleware([\App\Http\Middleware\OnlyMemberMiddleware::class])->group(function () {
+    Route::get('/todolist', [HomeController::class, 'homePage']);
+    Route::post('/logout', [UserController::class, 'doLogout']);
+    Route::get('/about', [AboutController::class, 'about']);
+});
+
+// Rute beranda
+Route::get('/', [HomeController::class, 'home']);
+
+// Rute untuk tampilan template
+Route::view('/template', 'template');
