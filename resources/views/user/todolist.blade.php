@@ -3,7 +3,7 @@
 @section('container')
     <div class="container py-5">
         @if (isset($error))
-            <div class="row">
+            <div>
                 <div class="alert alert-danger" role="alert">
                     {{ $error }}
                 </div>
@@ -107,4 +107,17 @@
             </div>
         </div>
     </div>
+    <script>
+        // Menghilangkan pesan error setelah 5 detik
+        setTimeout(function() {
+            var errorAlert = document.querySelector('.alert');
+            if (errorAlert) {
+                errorAlert.style.transition = "opacity 1s ease";
+                errorAlert.style.opacity = "0";
+                setTimeout(function() {
+                    errorAlert.remove();
+                }, 1000);
+            }
+        }, 2000);
+    </script>
 @endsection
