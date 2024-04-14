@@ -39,11 +39,11 @@ class TodolistServicesTest extends TestCase
     public function testTodolistNotEmpty()
     {
         $expected = [
-            ['id'=> '1','todo'=> 'bimas'],
-            ['id'=> '2','todo'=> 'sanjaya'],  
+            ['id'=> '1','todo'=> 'bimas', 'status' => 'unfinished'],
+            ['id'=> '2','todo'=> 'sanjaya', 'status' => 'unfinished'],  
         ];
 
-        $this->todolistServices->saveTodo('1', 'bimas');
+        $this->todolistServices->saveTodo('1', 'bimas',);
         $this->todolistServices->saveTodo('2', 'sanjaya');
 
         self::assertEquals($expected, $this->todolistServices->getTodolist());

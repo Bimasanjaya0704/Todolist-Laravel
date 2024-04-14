@@ -1,68 +1,107 @@
 @extends('layout.main')
 
 @section('container')
-    <div class="container py-5 h-100">
-        @if (@isset($error))
+    <div class="container py-5">
+        @if (isset($error))
             <div class="row">
                 <div class="alert alert-danger" role="alert">
                     {{ $error }}
                 </div>
             </div>
         @endif
-        <div class="row mb-5">
+
+        <div class="mb-3">
             <form method="post" action="/logout">
                 @csrf
-                <button class="btn btn-md btn-danger" type="submit">Sign Out</button>
+                <button class="btn btn-danger">Sign Out</button>
             </form>
         </div>
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col col-lg-9 col-xl-7">
+
+        <div class="row">
+            <div class="col-md-6">
                 <div class="card rounded-3">
-
-                    <div class="card-body p-4">
-
-                        <h4 class="text-center my-3 fs-3">Todolist App</h4>
-                        <p>by <a href="https://bimasanjaya.me/" target="_blank">Bima Sanjaya</a></p>
-
-
+                    <div class="card-body">
+                        <h4 class="text-center fs-5 fw-bold">Add New Todo</h4>
                         <form method="post" action="/todolist">
                             @csrf
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="todo" placeholder="todo">
-                                <label for="todo">Enter a task here</label>
+                                <input type="text" class="form-control form-control" name="todo" id="todo">
+                                <label for="todo">Enter a new task here</label>
                             </div>
                             <button type="submit" class="btn btn-primary">Save</button>
+
+
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card rounded-3">
+                    <div class="card-body">
+                        <h4 class="text-center fs-5 fw-bold">Todo Finish</h4>
+                        <ul class="list-group list-group-flush">
+                            @foreach ($todolist as $todo)
+                                @if (isset($todo['status']) && $todo['status'] === 'finished')
+                                    <li class="list-group-item">{{ $todo['todo'] }}</li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-
-                        <table class="table mb-4 mt-4">
-                            <thead>
-                                <tr>
-                                    <th scope="col">No.</th>
-                                    <th scope="col">Todo item</th>
-                                    {{-- <th scope="col">Status</th> --}}
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($todolist as $todo)
+        <div class="row mt-4">
+            <div class="col">
+                <div class="card rounded-3">
+                    <div class="card-body">
+                        <h4 class="text-center fs-5 fw-bold">Todolist Table</h4>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
                                     <tr>
-                                        <th scope="row">{{ $todo['id'] }}</th>
-                                        <td>{{ $todo['todo'] }}</td>
-                                        {{-- <td>{{ $todo['todo'] }}</td> --}}
-                                        <td>
-                                            <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-danger">Delete</button>
-                                            <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-success ms-1">Finished</button>
-                                        </td>
+                                        <th scope="col">No.</th>
+                                        <th scope="col">Todo item</th>
+                                        <th scope="col">Todo Status</th>
+                                        <th scope="col">Actions</th>
                                     </tr>
-                                @endforeach
-
-
-                            </tbody>
-                        </table>
-
+                                </thead>
+                                <tbody>
+                                    @foreach ($todolist as $index => $todo)
+                                        <tr>
+                                            <th scope="row">{{ $index + 1 }}</th>
+                                            <td>{{ $todo['todo'] }}</td>
+                                            <td>
+                                                @if (isset($todo['status']))
+                                                    @if ($todo['status'] === 'unfinished')
+                                                        <span class="badge bg-warning text-dark">Pending</span>
+                                                    @elseif ($todo['status'] === 'finished')
+                                                        <span class="badge bg-success">Finished</span>
+                                                    @endif
+                                                @else
+                                                    <span class="badge bg-secondary">Unknown</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group" aria-label="Todo Actions">
+                                                    @if (isset($todo['status']) && $todo['status'] === 'unfinished')
+                                                        <form action="/todolist/{{ $todo['id'] }}/finish" method="post">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="btn btn-success me-2">Finished</button>
+                                                        </form>
+                                                    @endif
+                                                    <form action="/todolist/{{ $todo['id'] }}/delete" method="post">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

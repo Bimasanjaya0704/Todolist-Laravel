@@ -32,11 +32,13 @@ Route::middleware([\App\Http\Middleware\OnlyMemberMiddleware::class])->group(fun
 
 // route untuk melakukan todo
 Route::controller(\App\Http\Controllers\TodolistController::class)
-->middleware([\App\Http\Middleware\OnlyMemberMiddleware::class])->group(function () {
-    Route::get('/todolist', 'todolist');
-    Route::post('/todolist', 'addTodolist');
-    Route::post('/todolist/{id}/delete', 'deleteTodolist');
-});
+    ->middleware([\App\Http\Middleware\OnlyMemberMiddleware::class])->group(function () {
+        Route::get('/todolist', 'todolist');
+        Route::post('/todolist', 'addTodolist');
+        Route::post('/todolist/{id}/delete', 'deleteTodolist');
+        Route::post('/todolist/{id}/finish', 'finishTodo');
+    });
+
 
 // Rute beranda
 Route::get('/', [HomeController::class, 'home']);

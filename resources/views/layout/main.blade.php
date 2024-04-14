@@ -17,7 +17,7 @@
         @include('partials.navbar')
     </header>
     <main>
-        <div class="container mt-4 mb-4 min-vh-100">
+        <div class="container mt-4 mb-4 ">
             @yield('container')
         </div>
     </main>

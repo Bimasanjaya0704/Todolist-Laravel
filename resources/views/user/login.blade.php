@@ -4,44 +4,81 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ $title }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
-    </script>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.3/components/logins/login-4/assets/css/login-4.css">
 </head>
 
 <body>
-    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
-        @if (isset($error))
-            <div class="row">
-                <div class="alert alert-danger" role="alert">
-                    {{ $error }}
+    <section class="p-3 p-md-4 p-xl-5 d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="container">
+            @if (isset($error))
+                <div>
+                    <div class="alert alert-danger" role="alert">
+                        {{ $error }}
+                    </div>
+                </div>
+            @endif
+            <div class="card border-light-subtle shadow-sm">
+                <div class="row g-0">
+                    <div class="col-12 col-md-6">
+                        <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy"
+                            src="https://img.freepik.com/free-photo/3d-illustration-pen-putting-blue-ticks-paper_107791-15675.jpg?t=st=1713078733~exp=1713082333~hmac=273a05274f16c10700f1e457279975eb20b7e4b36aa615ea61ab9d2a3a345c6e&w=996"
+                            alt="ToDoApp Image">
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="card-body p-3 p-md-4 p-xl-5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <h3 class="text-center fs-2 fw-bold">Todolist APP</h3>
+                                    </div>
+                                    <h3 class="mb-3">Log in</h3>
+                                </div>
+                            </div>
+                            <form action="/login" method="post">
+                                @csrf
+                                <div class="row gy-3 gy-md-4 overflow-hidden">
+                                    <div class="col-12">
+                                        <label for="user" class="form-label">User <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="user" id="user"
+                                            placeholder="Enter your user" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="password" class="form-label">Password <span
+                                                class="text-danger">*</span></label>
+                                        <input type="password" class="form-control" name="password" id="password"
+                                            placeholder="Enter your password" required>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="d-grid">
+                                            <button class="btn bsb-btn-xl btn-primary" type="submit">Log in
+                                                now</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        @endif
-        <div class="row align-items-center g-lg-5 py-5">
-            <div class="col-lg-7 text-center text-lg-start">
-                <h1 class="display-4 fw-bold lh-1 mb-3">Login</h1>
-                <p class="col-lg-10 fs-4">by <a target="_blank" href="https://bimasanjaya.me/">Bima Sanjaya</a></p>
-            </div>
-            <div class="col-md-10 mx-auto col-lg-5">
-                <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/login">
-                    @csrf
-                    <div class="form-floating mb-3">
-                        <input name="user" type="text" class="form-control" id="user" placeholder="id">
-                        <label for="user">User</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input name="password" type="password" class="form-control" id="password"
-                            placeholder="password">
-                        <label for="password">Password</label>
-                    </div>
-                    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign In</button>
-                </form>
-            </div>
         </div>
-    </div>
+    </section>
+    <script>
+        // Menghilangkan pesan error setelah 5 detik
+        setTimeout(function() {
+            var errorAlert = document.querySelector('.alert');
+            if (errorAlert) {
+                errorAlert.style.transition = "opacity 1s ease";
+                errorAlert.style.opacity = "0";
+                setTimeout(function() {
+                    errorAlert.remove();
+                }, 1000);
+            }
+        }, 1500);
+    </script>
+
 </body>
 
 </html>

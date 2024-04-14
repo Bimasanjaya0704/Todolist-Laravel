@@ -3,41 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Services\TodolistServices;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TodolistController extends Controller
 {
     private TodolistServices $todolistServices;
+
     public function __construct(TodolistServices $todolistServices)
     {
         $this->todolistServices = $todolistServices;
     }
 
-    public function todolist(Request $request){
-    $todolist = $this->todolistServices->getTodolist();
-    return response()->view('user.homePage', [
-        'title' => 'Homae',
-        'todolist'=> $todolist
-    ]);
+    public function todolist(Request $request)
+    {
+        $todolist = $this->todolistServices->getTodolist();
+        return response()->view('user.homePage', [
+            'title' => 'Home',
+            'todolist' => $todolist
+        ]);
     }
 
-    public function addTodolist(Request $request){
+    public function addTodolist(Request $request)
+    {
         $todo = $request->input('todo');
-        if(empty($todo)){
+        if (empty($todo)) {
             $todolist = $this->todolistServices->getTodolist();
             return response()->view('user.homePage', [
-                'title'=> 'Home',
-                'todolist'=> $todolist,
+                'title' => 'Home',
+                'todolist' => $todolist,
                 'error' => 'Todo is required'
             ]);
         }
 
         $this->todolistServices->saveTodo(uniqid(), $todo);
-        return redirect()->action([TodolistController::class,'todolist'])->with('success','');
+        return redirect()->action([TodolistController::class, 'todolist'])->with('success', '');
     }
 
-    public function deleteTodolist(Request $request, string $todoId){
+    public function deleteTodolist(Request $request, string $todoId): RedirectResponse
+    {
+        $this->todolistServices->deleteTodo($todoId);
+        return redirect()->action([TodolistController::class, 'todolist']);
+    }
+
+    public function finishTodo(string $todoId)
+    {
+        $this->todolistServices->finishTodo($todoId);
         
+        // Redirect to the todo list page
+        return redirect()->action([TodolistController::class, 'todolist'])->with('success', 'Item todo ditandai sebagai selesai.');
     }
-
+    
 }
