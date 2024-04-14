@@ -25,7 +25,7 @@ Route::middleware([\App\Http\Middleware\OnlyGuestMiddleware::class])->group(func
 
 // Rute untuk pengguna yang sudah login
 Route::middleware([\App\Http\Middleware\OnlyMemberMiddleware::class])->group(function () {
-    Route::get('/todolist', [HomeController::class, 'homePage']);
+    // Route::get('/todolist', [HomeController::class, 'homePage']);
     Route::post('/logout', [UserController::class, 'doLogout']);
     Route::get('/about', [AboutController::class, 'about']);
 });
