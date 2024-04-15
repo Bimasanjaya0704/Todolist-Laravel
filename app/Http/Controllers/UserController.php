@@ -10,41 +10,63 @@ use Illuminate\Http\Response;
 class UserController extends Controller
 {
     private UserServices $userServices;
-    public function __construct(UserServices $userServices){
+
+    public function __construct(UserServices $userServices)
+    {
         $this->userServices = $userServices;
+    }
+
+    public function showRegistrationForm(): Response
+    {
+        return response()->view('user.register', [
+            'title' => 'Register',
+        ]);
+    }
+
+    public function register(Request $request): Response|RedirectResponse
+    {
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        // validate input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if ($this->userServices->register($name, $email, $password)) {
+            return redirect('/login')->with('success', 'Registration successful! You can now login.');
+        }
+
+        return redirect()->back()->withInput()->with('error', 'Registration failed. Please try again.');
     }
 
     public function login(): Response
     {
-        return response()
-        ->view('user.login',[
-            'title'=> 'Login',
+        return response()->view('user.login', [
+            'title' => 'Login',
         ]);
     }
 
     public function doLogin(Request $request): Response|RedirectResponse
     {
-        $username = $request->input('user');
-        $password = $request->input('password');        
+        $email = $request->input('email');
+        $password = $request->input('password');
 
         // validate input
-        if(empty($username) || empty($password)){
-            return response()->view('user.login',[
-                'title' => 'Login',
-                'error' => 'Username and Password is required'
-                ]);
-        }
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
 
-        if($this->userServices->login($username, $password)){
-            $request->session()->put('user', $username);
+        if ($this->userServices->login($email, $password)) {
+            $request->session()->put('user', $email);
             return redirect('/');
         }
 
-        return response()->view('user.login',[
-            'title'=> 'Login',
-            'error'=> 'Username and Password is wrong'
-        ]);
-
+        return redirect()->back()->withInput()->with('error', 'Email and Password is wrong');
     }
 
     public function doLogout(Request $request): RedirectResponse

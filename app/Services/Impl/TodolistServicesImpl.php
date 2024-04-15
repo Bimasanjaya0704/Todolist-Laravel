@@ -2,82 +2,56 @@
 
 namespace App\Services\Impl;
 
+use App\Models\Todo;
 use App\Services\TodolistServices;
-use Illuminate\Support\Facades\Session;
 
 class TodolistServicesImpl implements TodolistServices
 {
     public function saveTodo(string $id, string $todo): void
     {
-        if (!Session::has('todolist')) {
-            Session::put('todolist', []);
-        }
-
-        $todolist = Session::get('todolist');
-        $todolist[] = [
-            'id' => $id,
-            'todo' => $todo,
-            'status' => 'unfinished', // Tambahkan status 'unfinished' saat menyimpan todo baru
-        ];
-
-        Session::put('todolist', $todolist);
+        $todo = new Todo([
+            "id" => $id,
+            "todo" => $todo
+        ]);
+        
+        $todo->save();
     }
 
     public function getTodolist(): array
     {
-        return Session::get('todolist', []);
+        return Todo::all()->toArray();
     }
 
     public function deleteTodo(string $todoId): void
     {
-        $todolist = Session::get('todolist');
-
-        foreach ($todolist as $index => $todo) {
-            if ($todo['id'] === $todoId) {
-                unset($todolist[$index]);
-                break;
-            }
+        $todo = Todo::find($todoId);
+        
+        if ($todo !== null) {
+            $todo->delete();
         }
-
-        Session::put('todolist', $todolist);
     }
 
     public function finishTodo(string $todoId): void
     {
-        $todolist = Session::get('todolist');
-    
-        foreach ($todolist as $index => $todo) {
-            if ($todo['id'] === $todoId) {
-                $todolist[$index]['status'] = 'finished';
-                break;
-            }
+        $todo = Todo::find($todoId);
+
+        if ($todo !== null) {
+            $todo->status = 'finished';
+            $todo->save();
         }
-    
-        Session::put('todolist', $todolist);
     }
-    
+
     public function deleteFinishedTodo(string $todoId): void
     {
-        $todolist = Session::get('todolist');
-    
-        foreach ($todolist as $index => $todo) {
-            if ($todo['id'] === $todoId && $todo['status'] === 'finished') {
-                unset($todolist[$index]);
-                break;
-            }
+        $todo = Todo::find($todoId);
+
+        if ($todo !== null && $todo->status === 'finished') {
+            $todo->delete();
         }
-    
-        Session::put('todolist', $todolist);
     }
-    
 
     public function getFinishedTodos(): array
     {
-        $todolist = Session::get('todolist', []);
-        $finishedTodos = array_filter($todolist, function ($todo) {
-            return isset($todo['status']) && $todo['status'] === 'finished';
-        });
-
-        return $finishedTodos;
+        return Todo::where('status', 'finished')->get()->toArray();
     }
 }

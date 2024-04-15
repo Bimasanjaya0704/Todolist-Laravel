@@ -40,15 +40,15 @@
                                 <div class="row gy-3 gy-md-4 overflow-hidden">
                                     <div class="col-12">
                                         <div class="form-floating mb-3">
-                                            <input name="user" type="text" class="form-control" id="user"
-                                                placeholder="id" required>
-                                            <label for="user">User</label>
+                                            <input name="email" type="text" class="form-control" id="email"
+                                                placeholder="Email" required> <!-- Ganti 'user' dengan 'email' -->
+                                            <label for="email">Email</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-floating mb-3">
                                             <input name="password" type="password" class="form-control" id="password"
-                                                placeholder="password" required>
+                                                placeholder="Password" required>
                                             <label for="password">Password</label>
                                         </div>
                                     </div>
@@ -60,8 +60,9 @@
                                     </div>
                                 </div>
                             </form>
+
                             <div class="mt-4 text-center">
-                                <p>Don't have an account? <a href="#!">Register</a></p>
+                                <p>Don't have an account? <a href="/register">Register</a></p>
                             </div>
                         </div>
                     </div>

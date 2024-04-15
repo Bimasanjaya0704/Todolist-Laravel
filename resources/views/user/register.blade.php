@@ -11,13 +11,18 @@
 <body>
     <section class="p-3 p-md-4 p-xl-5 d-flex justify-content-center align-items-center" style="min-height: 100vh;">
         <div class="container">
-            @if (isset($error))
+            @if ($errors->any())
                 <div>
                     <div class="alert alert-danger" role="alert">
-                        {{ $error }}
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             @endif
+
             <div class="card border-light-subtle shadow-sm">
                 <div class="row g-0">
                     <div class="col-12 col-md-6">
@@ -35,33 +40,46 @@
                                     <h3 class="mb-3">Register</h3>
                                 </div>
                             </div>
-                            <form action="/login" method="post">
+                            <form action="/register" method="post">
                                 @csrf
                                 <div class="row gy-3 gy-md-4 overflow-hidden">
                                     <div class="col-12">
                                         <div class="form-floating mb-3">
-                                            <input name="user" type="text" class="form-control" id="user"
-                                                placeholder="id" required>
-                                            <label for="user">User</label>
+                                            <input name="name" type="text" class="form-control" id="name"
+                                                placeholder="Name" required>
+                                            <label for="name">Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-floating mb-3">
+                                            <input name="email" type="email" class="form-control" id="email"
+                                                placeholder="Email" required>
+                                            <label for="email">Email</label>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-floating mb-3">
                                             <input name="password" type="password" class="form-control" id="password"
-                                                placeholder="password" required>
+                                                placeholder="Password" required>
                                             <label for="password">Password</label>
                                         </div>
                                     </div>
-
+                                    <div class="col-12">
+                                        <div class="form-floating mb-3">
+                                            <input name="password_confirmation" type="password" class="form-control"
+                                                id="password_confirmation" placeholder="Confirm Password" required>
+                                            <label for="password_confirmation">Confirm Password</label>
+                                        </div>
+                                    </div>
                                     <div class="col-12">
                                         <div class="d-grid">
-                                            <button class="btn bsb-btn-xl btn-primary" type="submit">Log in</button>
+                                            <button class="btn bsb-btn-xl btn-primary" type="submit">Register</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                             <div class="mt-4 text-center">
-                                <p>You have an account? <a href="#!">Login</a></p>
+                                <p>You have an account? <a href="/login">Login</a></p>
                             </div>
                         </div>
                     </div>

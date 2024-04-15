@@ -19,6 +19,8 @@ use App\Http\Controllers\UserController;
 
 // Rute untuk pengguna yang belum login
 Route::middleware([\App\Http\Middleware\OnlyGuestMiddleware::class])->group(function () {
+    Route::get('/register', [UserController::class, 'showRegistrationForm']);
+    Route::post('/register', [UserController::class, 'register']);
     Route::get('/login', [UserController::class, 'login']);
     Route::post('/login', [UserController::class, 'doLogin']);
 });

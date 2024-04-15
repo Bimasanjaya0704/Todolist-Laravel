@@ -3,9 +3,12 @@
 namespace Tests\Feature;
 
 use App\Services\TodolistServices;
+use Database\Seeders\TodoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Testing\Assert;
 use Tests\TestCase;
 
 class TodolistServicesTest extends TestCase
@@ -14,6 +17,8 @@ class TodolistServicesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        DB::delete("delete from todos");
         $this->todolistServices = $this->app->make(TodolistServices::class);
     }
     public function testTodolistNotNull()
@@ -24,8 +29,8 @@ class TodolistServicesTest extends TestCase
     public function testTodo(){
         $this->todolistServices->saveTodo("1", "bimas");
 
-        $todolits = Session::get("todolist");
-        foreach( $todolits as $value ){
+        $todolist = $this->todolistServices->getTodolist() ;
+        foreach( $todolist as $value ){
             self::assertEquals('1', $value['id']);
             self::assertEquals('bimas', $value['todo']);
         }
@@ -46,11 +51,12 @@ class TodolistServicesTest extends TestCase
         $this->todolistServices->saveTodo('1', 'bimas',);
         $this->todolistServices->saveTodo('2', 'sanjaya');
 
-        self::assertEquals($expected, $this->todolistServices->getTodolist());
+        Assert::assertArraySubset($expected, $this->todolistServices->getTodolist());
     }
 
     public function testDeleteTodo()
     {
+        
         $this->todolistServices->saveTodo('1', 'bimas');
         $this->todolistServices->saveTodo('2', 'sanjaya');
 

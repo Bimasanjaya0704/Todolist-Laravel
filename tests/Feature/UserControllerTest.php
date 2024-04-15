@@ -31,7 +31,7 @@ class UserControllerTest extends TestCase
     public function testLoginSuccess(){
         $this->seed(UserSeeder::class);
         $this->post('/login', [
-            'user' => 'bimas@mail.com',
+            'email' => 'bimas@mail.com',
             'password' => 'rahasia',
         ])
         ->assertRedirect('/')
@@ -51,15 +51,15 @@ class UserControllerTest extends TestCase
         $this->post('/login', [
             
         ])
-        ->assertSeeText('Username and Password is required');
+        ->assertSeeText('Email and Password is required');
     }
 
     public function testLoginFailed(){
         $this->post('/login', [
-            'user' => 'bimas',
+            'email' => 'bimas',
             'password' => 'bimas',
         ])
-        ->assertSeeText('Username and Password is wrong');
+        ->assertSeeText('Email and Password is wrong');
     }
 
     public function testLogout(){
