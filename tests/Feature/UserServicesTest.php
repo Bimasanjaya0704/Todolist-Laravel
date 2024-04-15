@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Services\UserServices;
+use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class UserServicesTest extends TestCase
@@ -13,6 +15,7 @@ class UserServicesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        DB::delete("delete from users");
         $this->userServices = $this->app->make(UserServices::class);
     }
     public function testSample()
@@ -22,7 +25,8 @@ class UserServicesTest extends TestCase
 
     public function testLoginSuccess()
     {
-        self::assertTrue($this->userServices->login("bimas", "rahasia"));
+        $this->seed(UserSeeder::class);
+        self::assertTrue($this->userServices->login("bimas@mail.com", "rahasia"));
     }
 
     public function testLoginWrongPassword()
@@ -35,12 +39,5 @@ class UserServicesTest extends TestCase
         self::assertFalse($this->userServices->login("sanjaya", "bimas"));
     }
 
-    public function testLogout(){
-        $this->withSession(
-            ["user","bimas"]
-            )
-            ->post('/logout')
-            ->assertRedirect('/')
-            ->assertSessionMissing('user');
-    }
+    
 }

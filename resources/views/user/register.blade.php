@@ -32,7 +32,7 @@
                                     <div class="mb-3">
                                         <h3 class="text-center fs-2 fw-bold">Todolist APP</h3>
                                     </div>
-                                    <h3 class="mb-3">Log in</h3>
+                                    <h3 class="mb-3">Register</h3>
                                 </div>
                             </div>
                             <form action="/login" method="post">
@@ -61,7 +61,7 @@
                                 </div>
                             </form>
                             <div class="mt-4 text-center">
-                                <p>Don't have an account? <a href="#!">Register</a></p>
+                                <p>You have an account? <a href="#!">Login</a></p>
                             </div>
                         </div>
                     </div>

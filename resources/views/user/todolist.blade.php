@@ -1,7 +1,7 @@
 @extends('layout.main')
 
 @section('container')
-    <div class="container py-5">
+    <div class="container py-5 min-vh-100">
         @if (isset($error))
             <div>
                 <div class="alert alert-danger" role="alert">
