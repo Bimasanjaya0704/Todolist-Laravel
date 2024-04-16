@@ -34,7 +34,8 @@ class TodolistController extends Controller
 {
     $todo = $request->input('todo');
     if (empty($todo)) {
-        $todolist = $this->todolistServices->getTodolist();
+        $userId = $request->user()->id;
+        $todolist = $this->todolistServices->getTodolist($userId);
         return response()->view('user.homePage', [
             'title' => 'Home',
             'todolist' => $todolist,
