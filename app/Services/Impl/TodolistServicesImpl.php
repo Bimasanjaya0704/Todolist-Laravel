@@ -7,20 +7,23 @@ use App\Services\TodolistServices;
 
 class TodolistServicesImpl implements TodolistServices
 {
-    public function saveTodo(string $id, string $todo): void
+    public function saveTodo(string $id, string $todo, int $userId): void
     {
         $todo = new Todo([
             "id" => $id,
-            "todo" => $todo
+            "todo" => $todo,
+            "user_id" => $userId, 
         ]);
         
         $todo->save();
     }
+    
 
-    public function getTodolist(): array
+    public function getTodolist(int $userId): array
     {
-        return Todo::all()->toArray();
+        return Todo::where('user_id', $userId)->get()->toArray();
     }
+
 
     public function deleteTodo(string $todoId): void
     {

@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('todos', function (Blueprint $table) {
             $table->string('id')->nullable(false)->primary();
             $table->string('todo', 500)->nullable(false);
-            $table->string('status')->default('unfinished'); // Add status column with default value
+            $table->string('status')->default('unfinished');
+            $table->unsignedBigInteger('user_id'); // Tambahkan kolom user_id
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.

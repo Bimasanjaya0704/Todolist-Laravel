@@ -15,7 +15,8 @@ class Todo extends Model
         "id",
         "todo",
         "status",
+        "user_id", 
     ];
-
+    
     public $timestamps = true;
 }

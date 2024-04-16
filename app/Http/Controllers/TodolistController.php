@@ -16,29 +16,39 @@ class TodolistController extends Controller
     }
 
     public function todolist(Request $request)
-    {
+{
+    // Dapatkan ID pengguna yang sedang login
+    $userId = $request->user()->id;
+
+    // Ambil todo hanya untuk pengguna yang sedang login
+    $todolist = $this->todolistServices->getTodolist($userId);
+    
+    return response()->view('user.homePage', [
+        'title' => 'Home',
+        'todolist' => $todolist
+    ]);
+}
+
+
+    public function addTodolist(Request $request)
+{
+    $todo = $request->input('todo');
+    if (empty($todo)) {
         $todolist = $this->todolistServices->getTodolist();
         return response()->view('user.homePage', [
             'title' => 'Home',
-            'todolist' => $todolist
+            'todolist' => $todolist,
+            'error' => 'Todo is required'
         ]);
     }
 
-    public function addTodolist(Request $request)
-    {
-        $todo = $request->input('todo');
-        if (empty($todo)) {
-            $todolist = $this->todolistServices->getTodolist();
-            return response()->view('user.homePage', [
-                'title' => 'Home',
-                'todolist' => $todolist,
-                'error' => 'Todo is required'
-            ]);
-        }
+    // Dapatkan ID pengguna yang sedang login
+    $userId = $request->user()->id;
 
-        $this->todolistServices->saveTodo(uniqid(), $todo);
-        return redirect()->action([TodolistController::class, 'todolist'])->with('success', '');
-    }
+    $this->todolistServices->saveTodo(uniqid(), $todo, $userId); // Kirimkan user_id
+    return redirect()->action([TodolistController::class, 'todolist'])->with('success', '');
+}
+
 
     public function deleteTodolist(Request $request, string $todoId): RedirectResponse
     {

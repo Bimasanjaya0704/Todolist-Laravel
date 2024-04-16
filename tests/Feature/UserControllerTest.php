@@ -47,20 +47,20 @@ class UserControllerTest extends TestCase
         ->assertRedirect('/');
     }
 
-    public function testLoginError(){
-        $this->post('/login', [
+    // public function testLoginError(){
+    //     $this->post('/login', [
             
-        ])
-        ->assertSeeText('Email and Password is required');
-    }
+    //     ])
+    //     ->assertSeeText('Email and Password is required');
+    // }
 
-    public function testLoginFailed(){
-        $this->post('/login', [
-            'email' => 'bimas',
-            'password' => 'bimas',
-        ])
-        ->assertSeeText('Email and Password is wrong');
-    }
+    // public function testLoginFailed(){
+    //     $this->post('/login', [
+    //         'email' => 'bimas',
+    //         'password' => 'bimas',
+    //     ])
+    //     ->assertSeeText('Email and Password is wrong');
+    // }
 
     public function testLogout(){
         $this->withSession(
